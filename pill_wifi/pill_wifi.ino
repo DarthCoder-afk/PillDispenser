@@ -10,10 +10,10 @@
 //#define FIREBASE_HOST "pill-spencer-default-rtdb.firebaseio.com/"
 //#define FIREBASE_AUTH "8tKXDqGtfdFtIQmDwUf6QbZp5csveh6Nd6BvpRZm"
 
-#define FIREBASE_HOST "pill-dispenser-9af61-default-rtdb.firebaseio.com"
-#define FIREBASE_AUTH "X3nvG1lXfMezZeK5RT7HHjunhfnAGYTyT31Kg0tX"
-#define WIFI_SSID "PLDTHOMEFIBR272c0"
-#define WIFI_PASSWORD "PLDTWIFId6fsm"
+#define FIREBASE_HOST ""
+#define FIREBASE_AUTH ""
+#define WIFI_SSID ""
+#define WIFI_PASSWORD ""
 
 // Define the NTP server and time offset
 const char* ntpServer = "asia.pool.ntp.org";
@@ -163,9 +163,6 @@ void loop() {
   String currentDates = String(New_currentDay) + String(New_currentMonth) + String(currentYear);
 
   
-  
-
-
   //Serial.println(String(schedDates));
   //Serial.println(String(currentDates));
   //Serial.println(data.timeStr);
@@ -214,7 +211,6 @@ void loop() {
 
   }
 
- 
   delay(5000);
 }
 
