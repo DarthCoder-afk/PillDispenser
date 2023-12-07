@@ -5,15 +5,15 @@
 #include <WiFiUdp.h>
 #include <TimeLib.h> 
 
-// Set these to run example.
 
-//#define FIREBASE_HOST "pill-spencer-default-rtdb.firebaseio.com/"
-//#define FIREBASE_AUTH "8tKXDqGtfdFtIQmDwUf6QbZp5csveh6Nd6BvpRZm"
 
-#define FIREBASE_HOST ""
-#define FIREBASE_AUTH ""
-#define WIFI_SSID ""
-#define WIFI_PASSWORD ""
+#define FIREBASE_HOST "pill-spencer-default-rtdb.firebaseio.com"
+#define FIREBASE_AUTH "8tKXDqGtfdFtIQmDwUf6QbZp5csveh6Nd6BvpRZm"
+
+//#define FIREBASE_HOST "pill-dispenser-9af61-default-rtdb.firebaseio.com"
+//#define FIREBASE_AUTH "X3nvG1lXfMezZeK5RT7HHjunhfnAGYTyT31Kg0tX"
+#define WIFI_SSID "ZTE_2.4G_xs6YrY"
+#define WIFI_PASSWORD "yyinathh"
 
 // Define the NTP server and time offset
 const char* ntpServer = "asia.pool.ntp.org";
@@ -22,9 +22,11 @@ const long timeZoneOffset = 8 * 3600;  // Philippine time offset (in seconds)
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, ntpServer, timeZoneOffset);
 int ledPin = D4;
-int wireSDAPin = D1;  // Change to the desired SDA pin
-int wireSCLPin = D2;  // Change to the desired SCL pin
+int wireSDAPin = D1;  
+int wireSCLPin = D2;  
  
+int irpin = D3;
+int count = 0;
 
 struct Data {
   String containerName; 
@@ -44,7 +46,7 @@ void setup() {
 
   setTime(0);
 
-  // Connect to WiFi.
+
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.print("Connecting");
   while (WiFi.status() != WL_CONNECTED) {
@@ -52,18 +54,30 @@ void setup() {
     delay(500);
   }
 
-  // Initialize Firebase
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
 
   // Initialize NTPClient
   timeClient.begin();
   timeClient.setTimeOffset(0); // Optionally, set the time offset in seconds if required.
   timeClient.update();
+
+  pinMode(irpin, INPUT);
 }
 
 void loop() {
   // Update current time
   timeClient.update();
+
+  String counter1 = Firebase.getString("container1_pill_number");
+  count = counter1.toInt();  
+
+  if (digitalRead(irpin) == LOW) {
+    count++;
+    Firebase.setString("container1_pill_number", String(count++));
+    delay(200); // Adjust this delay based on your requirements
+  }
+    Serial.print("Container 1 Pill Number:");
+    Serial.println(count++);
 
   // Retrieve data from Firebase
   String result = Firebase.getString("data");
@@ -72,16 +86,16 @@ void loop() {
   
   String result_con2 = Firebase.getString("data2");
 
-  //Serial.println(result_con2);
+  Serial.println(result_con2);
 
   // Parse the data into variables
   Data data = parseData(result);
   Data data_con2 = parseData(result_con2);
 
   // Get the current date and time
-  unsigned long epochTime = timeClient.getEpochTime() + 24 * 3600; // Add 1 day (24 hours) in seconds
+  //unsigned long epochTime = timeClient.getEpochTime() + 24 * 3600; // Add 1 day (24 hours) in seconds
 
-  //unsigned long epochTime = timeClient.getEpochTime();
+  unsigned long epochTime = timeClient.getEpochTime();
   int currentYear = year(epochTime);
   int currentMonth = month(epochTime);
   int currentDay = day(epochTime);
@@ -159,12 +173,17 @@ void loop() {
   String currentTime1 = String(New_hourString) + ":" + String(New_currentTime);
   int currentDate1 = int(currentDay);
 
+  //Serial.print(currentTime1);
+
   String schedDates = String(New_dataday) + String(New_datamonth) + String(data.year);
   String currentDates = String(New_currentDay) + String(New_currentMonth) + String(currentYear);
 
   
+  
+
+
   //Serial.println(String(schedDates));
-  //Serial.println(String(currentDates));
+  Serial.println(String(currentDates));
   //Serial.println(data.timeStr);
   //Serial.println(currentTime1);
   
@@ -211,6 +230,7 @@ void loop() {
 
   }
 
+ 
   delay(5000);
 }
 
