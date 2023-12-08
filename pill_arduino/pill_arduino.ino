@@ -4,6 +4,8 @@
 
 Servo servo;
 
+Servo servo2;
+
 Servo gateservo;
 
 int buzzer = 5;
@@ -24,6 +26,7 @@ void setup() {
 
   Wire.begin();
   servo.attach(10);
+  servo2.attach(8);
   gateservo.attach(7);  
  
   lcd.init();
@@ -79,7 +82,7 @@ void loop() {
         
       } else if (String(container) == "Container2") {
         tone(buzzer, 392, 500);
-        moveServoMotor(pillsToBeTaken);
+        moveServoMotor2(pillsToBeTaken);
         delay(5000);
 
       }
@@ -101,8 +104,9 @@ void loop() {
 
   int gatebuttonstate = digitalRead(gatebutton);
    if (gatebuttonstate == LOW){
+    Serial.write("Button pressed");
     gateservo.write(180);
-    delay(5000);
+    delay(2000);
     gateservo.write(0);
     delay(1000);
   } else {
@@ -118,7 +122,16 @@ servo.write(0);
 
 void moveServoMotor(int numpillsToBeTaken) {
  for (int i = 0; i < numpillsToBeTaken; ++i) {
-    int angle = 90;  
+    int angle = 60;  
+    servo.write(angle);
+    delay(1000);
+    servo.write(0); 
+    delay(1000);
+  } 
+}
+void moveServoMotor2(int numpillsToBeTaken) {
+ for (int i = 0; i < numpillsToBeTaken; ++i) {
+    int angle = 60;  
     servo.write(angle);
     delay(1000);
     servo.write(0); 
@@ -136,7 +149,7 @@ String getValue(const String& data, char separator, int index) {
       found++;
       strIndex[0] = strIndex[1] + 1;
       strIndex[1] = (i == maxIndex) ? i + 1 : i;
-    }
+    }           
   }
 
   return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
