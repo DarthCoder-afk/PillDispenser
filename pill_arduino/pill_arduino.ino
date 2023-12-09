@@ -71,29 +71,19 @@ void loop() {
 
       if (String(container) == "Container1" && String(container) == "Container2") {
         tone(buzzer, 392, 5000);
-        moveServoMotor(pillsToBeTaken);
-        moveServoMotor2(pillsToBeTaken);
-        //delay(5000);
-     
-
+        moveServoMotor(pillsToBeTaken, servo);   
+        moveServoMotor(pillsToBeTaken, servo2); 
       } else if (String(container) == "Container1") {
         tone(buzzer, 392, 5000);
-        moveServoMotor(pillsToBeTaken);
-        //delay(5000);
-        
+        moveServoMotor(pillsToBeTaken, servo);   
       } else if (String(container) == "Container2") {
         tone(buzzer, 392, 5000);
-        moveServoMotor2(pillsToBeTaken);
-        //delay(5000);
-
+        moveServoMotor(pillsToBeTaken, servo2);  // Move Servo2 for Container2
       }
     } else {
       Serial.println("None");
-      noTone(buzzer) ;
-      
+      noTone(buzzer);
     }
-
-  
   }
 
   int buttonstate = digitalRead(buttonpin);
@@ -122,24 +112,16 @@ servo2.write(0);
 }
 
 
-void moveServoMotor(int numpillsToBeTaken) {
- for (int i = 0; i < numpillsToBeTaken; ++i) {
-    int angle = 60;  
-    servo.write(angle);
+void moveServoMotor(int numPillsToBeTaken, Servo &servoMotor) {
+  for (int i = 0; i < numPillsToBeTaken; ++i) {
+    int angle = 60;
+    servoMotor.write(angle);
     delay(1000);
-    servo.write(0); 
+    servoMotor.write(0);
     delay(1000);
-  } 
+  }
 }
-void moveServoMotor2(int numpillsToBeTaken) {
- for (int i = 0; i < numpillsToBeTaken; ++i) {
-    int angle = 60;  
-    servo2.write(angle);
-    delay(1000);
-    servo2.write(0); 
-    delay(1000);
-  } 
-}
+
 
 String getValue(const String& data, char separator, int index) {
   int found = 0;
