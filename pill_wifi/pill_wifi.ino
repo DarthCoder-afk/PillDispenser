@@ -197,41 +197,46 @@ void loop() {
   
 
   // Compare the retrieved date and time with the current date and time (adjusted for Philippine time)
-  if (String(schedDates) == String(currentDates) &&
-      String(data.timeStr) == String(currentTime1)) {
+      bool container1Match = (String(schedDates) == String(currentDates) &&
+                              String(data.timeStr) == String(currentTime1));
 
-    // The date and time match, perform the desired actions
-    Serial.println(String(result) + "," + "True" + "," + "Container1");
+      bool container2Match = (String(schedDates_con2) == String(currentDates) && 
+                              String(data_con2.timeStr) == String(currentTime1));
 
+      // Check if both containers have a match
+      if (container1Match && container2Match) {
+          Serial.println(String(result) + "," + "True" + "," + "Container1");
+          Serial.println(String(result_con2) + "," + "True" + "," + "Container2");
 
-    // Turn on the LED
-    digitalWrite(ledPin, HIGH);
+          // Turn on the LED
+          digitalWrite(ledPin, HIGH);
 
-    // Delay for 1 minute
-    delay(60000);
-  } else if (String(schedDates_con2) == String(currentDates) && 
-      String(data_con2.timeStr) == String(currentTime1)) {
-    
-    //String data_ = "True" + "," + result;
-    Serial.println(String(result_con2) + "," + "True" + "," + "Container2");
+          // Delay for 1 minute
+          delay(60000);
+      } else if (container1Match) {
+          Serial.println(String(result) + "," + "True" + "," + "Container1");
 
+          // Turn on the LED
+          digitalWrite(ledPin, HIGH);
 
-    // Turn on the LED
-    digitalWrite(ledPin, HIGH);
+          // Delay for 1 minute
+          delay(60000);
+      } else if (container2Match) {
+          Serial.println(String(result_con2) + "," + "True" + "," + "Container2");
 
-    // Delay for 1 minute
-    delay(60000);
+          // Turn on the LED
+          digitalWrite(ledPin, HIGH);
 
-  } else {
-    Serial.println("False");
-    
-    // Turn off the LED
-    digitalWrite(ledPin, LOW);
+          // Delay for 1 minute
+          delay(60000);
+      } else {
+          Serial.println("False");
+          
+          // Turn off the LED
+          digitalWrite(ledPin, LOW);
+      }
 
-  }
-
- 
-  delay(5000);
+      delay(5000);
 }
 
 
