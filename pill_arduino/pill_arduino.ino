@@ -26,7 +26,7 @@ void setup() {
 
   Wire.begin();
   servo.attach(10);
-  servo2.attach(8);
+  servo2.attach(9);
   gateservo.attach(7);  
  
   lcd.init();
@@ -67,23 +67,24 @@ void loop() {
       lcd.clear();
       lcd.print("Pill Name: ");
       lcd.setCursor (0,1); 
-      lcd.print(containerName);
+      lcd.print(containerName); 
 
-      if (String(container) == "Container1" || String(container) == "Container2") {
-        tone(buzzer, 392, 500);
+      if (String(container) == "Container1" && String(container) == "Container2") {
+        tone(buzzer, 392, 5000);
         moveServoMotor(pillsToBeTaken);
-        delay(5000);
-      tone(buzzer, 392, 500);
+        moveServoMotor2(pillsToBeTaken);
+        //delay(5000);
+     
 
       } else if (String(container) == "Container1") {
-        tone(buzzer, 392, 1000);
+        tone(buzzer, 392, 5000);
         moveServoMotor(pillsToBeTaken);
-        delay(5000);
+        //delay(5000);
         
       } else if (String(container) == "Container2") {
-        tone(buzzer, 392, 500);
+        tone(buzzer, 392, 5000);
         moveServoMotor2(pillsToBeTaken);
-        delay(5000);
+        //delay(5000);
 
       }
     } else {
@@ -116,6 +117,7 @@ void loop() {
 
 
 servo.write(0);
+servo2.write(0);
 
 }
 
@@ -132,9 +134,9 @@ void moveServoMotor(int numpillsToBeTaken) {
 void moveServoMotor2(int numpillsToBeTaken) {
  for (int i = 0; i < numpillsToBeTaken; ++i) {
     int angle = 60;  
-    servo.write(angle);
+    servo2.write(angle);
     delay(1000);
-    servo.write(0); 
+    servo2.write(0); 
     delay(1000);
   } 
 }
