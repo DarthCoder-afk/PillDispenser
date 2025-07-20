@@ -7,13 +7,13 @@
 
 
 
-#define FIREBASE_HOST "pill-spencer-default-rtdb.firebaseio.com"
-#define FIREBASE_AUTH "8tKXDqGtfdFtIQmDwUf6QbZp5csveh6Nd6BvpRZm"
+#define FIREBASE_HOST ""
+#define FIREBASE_AUTH ""
 
 //#define FIREBASE_HOST "pill-dispenser-9af61-default-rtdb.firebaseio.com"
 //#define FIREBASE_AUTH "X3nvG1lXfMezZeK5RT7HHjunhfnAGYTyT31Kg0tX"
-#define WIFI_SSID "ZTE_2.4G_xs6YrY"
-#define WIFI_PASSWORD "yyinathh"
+#define WIFI_SSID ""
+#define WIFI_PASSWORD ""
 
 // Define the NTP server and time offset
 const char* ntpServer = "asia.pool.ntp.org";
@@ -160,7 +160,6 @@ void loop() {
     New_datamonth = String(data.month);
   }
 
-
    String New_datamonth2;
   if (data_con2.month < 10) {
     //currentTime1 = "0" + String(currentDay);
@@ -168,7 +167,6 @@ void loop() {
   } else {
     New_datamonth2 = String(data_con2.month);
   }
-
 
   String currentTime1 = String(New_hourString) + ":" + String(New_currentTime);
   int currentDate1 = int(currentDay);
@@ -178,17 +176,12 @@ void loop() {
   String schedDates = String(New_dataday) + String(New_datamonth) + String(data.year);
   String currentDates = String(New_currentDay) + String(New_currentMonth) + String(currentYear);
 
-  
-  
-
-
   //Serial.println(String(schedDates));
   Serial.println(String(currentDates));
   //Serial.println(data.timeStr);
   //Serial.println(currentTime1);
   
   String schedDates_con2 = String(New_dataday2) + String(New_datamonth2) + String(data_con2.year);
-
 
   //Serial.println(schedDates_con2);
   //Serial.println(currentDates);
